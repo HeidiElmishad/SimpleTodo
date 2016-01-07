@@ -19,7 +19,7 @@ The following functionality is completed:
 
 Here's a walkthrough of implemented user stories:
 
-<file:///Users/snapfish/Documents/SimpletodoDemo.gif/>
+[img]http://i.imgur.com/LyEbzBr.gif[/img]
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
