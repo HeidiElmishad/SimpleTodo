@@ -12,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.commons.io.FileUtils;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 items.remove(position);
                 writeItems();
                 itemsAdapter.notifyDataSetChanged();
+                Toast.makeText(getBaseContext(),"Item removed!", Toast.LENGTH_LONG).show();
                 return true;
             }
         });
