@@ -29,8 +29,7 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_task_layout);
-        Bundle b = new Bundle();
-        b = getIntent().getExtras();
+        Bundle b = getIntent().getExtras();
         if(b != null) {
             mTaskName = b.getString("taskName");
             mTaskNotes = b.getString("taskNotes");
