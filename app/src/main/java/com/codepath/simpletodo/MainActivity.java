@@ -29,14 +29,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE = 10;
+    private static final int ADD_TASK_REQUEST_CODE = 10;
+    private static final int EDIT_TASK_REQUEST_CODE = 20;
 //    private ArrayList<String> items;
 //    private ArrayAdapter<String> itemsAdapter;
     private ItemsAdapter mItemsAdapter = null;
     private ListView lvItems;
     private EditText editText;
     private Button btnAddItem;
-    private Intent intent;
+    private Intent editIntent;
     private static int POSITION = 0;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -91,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_add) {
             addNewTask();
             return true;
@@ -101,13 +101,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addNewTask() {
-        intent = new Intent(this, AddTaskActivity.class);
-        startActivityForResult(intent,REQUEST_CODE);
+        Intent intent = new Intent(this, AddTaskActivity.class);
+        startActivityForResult(intent, ADD_TASK_REQUEST_CODE);
 
     }
 
     private void setupListViewListener() {
-        intent = new Intent(this, EditActivity.class);
+        editIntent = new Intent(this, EditActivity.class);
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,36 +122,22 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                POSITION = position;
-//                String itemText = items.get(position).toString();
-//                intent.putExtra("itemText", itemText);
-//                startActivityForResult(intent, REQUEST_CODE);
+
+                POSITION = position;
+                TodoItem item = mItemsAdapter.getItem(position);
+                editIntent.putExtra("taskName", item.getmTaskName());
+                editIntent.putExtra("taskNotes", item.getmTaskNotes());
+                editIntent.putExtra("taskPriority", item.getmPriority());
+                editIntent.putExtra("taskstatus", item.getmStatus());
+                startActivityForResult(editIntent, EDIT_TASK_REQUEST_CODE);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            String itemName = null;
-            String itemNotes= null;
-            String itemPriority = null;
-            String itemStatus = null;
-            if(data.hasExtra("taskName")) {
-                itemName = data.getExtras().getString("taskName");
-            }
-            if(data.hasExtra("taskNotes")) {
-                itemNotes = data.getExtras().getString("taskNotes");
-            }
-            if(data.hasExtra("taskPriority")) {
-                itemPriority = data.getExtras().getString("taskPriority");
-            }
-            if(data.hasExtra("taskstatus")) {
-                itemStatus = data.getExtras().getString("taskstatus");
-            }
-
-            TodoItem item = new TodoItem(null,itemPriority,itemStatus,itemName,itemNotes);
-            mItemsAdapter.add(item);
+        if (resultCode == RESULT_OK && requestCode == ADD_TASK_REQUEST_CODE) {
+            addTaskOnActivityResult(data);
 //            mItemsAdapter.notifyDataSetChanged();
             writeItems();
 //            if (data.hasExtra("editedText")) {
@@ -162,7 +148,36 @@ public class MainActivity extends AppCompatActivity {
 //                    writeItems();
 //                    itemsAdapter.notifyDataSetChanged();
 //                }
+
         }
+        if (resultCode == RESULT_OK && requestCode == EDIT_TASK_REQUEST_CODE) {
+            TodoItem Item = mItemsAdapter.getItem(POSITION);
+            mItemsAdapter.remove(Item);
+            addTaskOnActivityResult(data);
+            mItemsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void addTaskOnActivityResult(Intent data) {
+        String itemName = null;
+        String itemNotes = null;
+        String itemPriority = null;
+        String itemStatus = null;
+        if (data.hasExtra("taskName")) {
+            itemName = data.getExtras().getString("taskName");
+        }
+        if (data.hasExtra("taskNotes")) {
+            itemNotes = data.getExtras().getString("taskNotes");
+        }
+        if (data.hasExtra("taskPriority")) {
+            itemPriority = data.getExtras().getString("taskPriority");
+        }
+        if (data.hasExtra("taskstatus")) {
+            itemStatus = data.getExtras().getString("taskstatus");
+        }
+
+        TodoItem item = new TodoItem(null, itemPriority, itemStatus, itemName, itemNotes);
+        mItemsAdapter.add(item);
     }
 
     private void readItems() {

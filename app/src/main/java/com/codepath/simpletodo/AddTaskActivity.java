@@ -96,4 +96,5 @@ public class AddTaskActivity extends AppCompatActivity {
         setResult(RESULT_OK, data);
         super.finish();
     }
+
 }

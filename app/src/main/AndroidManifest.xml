@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditActivity"
-            android:label="Edit Activity">
+            android:label="Edit Task">
         </activity>
         <activity android:name=".AddTaskActivity"
             android:label="Add Task">
