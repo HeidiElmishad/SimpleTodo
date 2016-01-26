@@ -111,10 +111,11 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                mItemsAdapter.remove(position);
-//                writeItems();
-//                mItemsAdapter.notifyDataSetChanged();
-//                Toast.makeText(getBaseContext(),"Item removed!", Toast.LENGTH_LONG).show();
+                TodoItem item = mItemsAdapter.getItem(position);
+                mItemsAdapter.remove(item);
+                writeItems();
+                mItemsAdapter.notifyDataSetChanged();
+                Toast.makeText(getBaseContext(),"Item removed!", Toast.LENGTH_LONG).show();
                 return true;
             }
         });
