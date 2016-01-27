@@ -3,18 +3,23 @@ package com.codepath.simpletodo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.Calendar;
 /**
  * Created by snapfish on 1/25/16.
  */
 public class AddTaskActivity extends AppCompatActivity {
+
+    private final static String TAG =  AddTaskActivity.class.getName();
 
     private Spinner mPrioritySpinner;
     private Spinner mStatusSpinner;
@@ -22,6 +27,9 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText mtaskNotes;
     private String mStatus;
     private String mPriority;
+    private CalendarView mDateCalendar;
+    private String mTaskDate;
+    private long milliTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +75,24 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         });
 
+        mDateCalendar = (CalendarView) findViewById(R.id.date_calendar);
+        mDateCalendar.setDate(Calendar.getInstance().getTimeInMillis());
+        mDateCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+//                mDate.set(year, month, dayOfMonth);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+
+                milliTime = calendar.getTimeInMillis();
+                Log.d(TAG, "Add Task milliTime " + milliTime);
+                mTaskDate = "" + (month+1) + "/" + dayOfMonth + "/" + year;
+            }
+        });
+
     }
 
 
@@ -93,6 +119,8 @@ public class AddTaskActivity extends AppCompatActivity {
         data.putExtra("taskNotes", mtaskNotes.getText().toString());
         data.putExtra("taskPriority", mPriority);
         data.putExtra("taskstatus", mStatus);
+        data.putExtra("taskDate", mTaskDate);
+        data.putExtra("taskMilliTime", milliTime);
         setResult(RESULT_OK, data);
         super.finish();
     }

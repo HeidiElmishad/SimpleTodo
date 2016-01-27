@@ -10,6 +10,7 @@
     <string name="task_name">Task Name:</string>
     <string name="task_notes">Notes:</string>
     <string name="task_status">Status:</string>
+    <string name="task_date">Due Date:</string>
     <string-array name="task_status_values">
         <item>TO-DO</item>
         <item>DONE</item>

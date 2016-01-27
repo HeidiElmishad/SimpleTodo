@@ -39,7 +39,7 @@ public class ItemsAdapter extends ArrayAdapter<TodoItem> {
         }
 
         if(item.getmDueDate() != null) {
-            mViewHolder.mDate.setText(item.getmDueDate().toString());
+            mViewHolder.mDate.setText(item.getmDueDate());
         }
         mViewHolder.mTaskName.setText(item.getmTaskName());
         if(item.getmPriority() != null) {

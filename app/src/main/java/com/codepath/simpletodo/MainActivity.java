@@ -4,24 +4,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.codepath.simpletodo.com.codepath.simpletodo.ItemsAdapter;
+import com.codepath.simpletodo.com.codepath.simpletodo.SerializeObject;
 import com.codepath.simpletodo.com.codepath.simpletodo.TodoItem;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
+
+    private static final String TAG = MainActivity.class.getName();
 
     private static final int ADD_TASK_REQUEST_CODE = 10;
     private static final int EDIT_TASK_REQUEST_CODE = 20;
-
+    private ArrayList<TodoItem> mItemsArray;
     private ItemsAdapter mItemsAdapter = null;
     private ListView lvItems;
     private Intent editIntent;
@@ -88,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
                 editIntent.putExtra("taskNotes", item.getmTaskNotes());
                 editIntent.putExtra("taskPriority", item.getmPriority());
                 editIntent.putExtra("taskstatus", item.getmStatus());
+                editIntent.putExtra("taskDate", item.getmDueDate());
+                editIntent.putExtra("taskMilliTime", item.getMilliTime());
                 startActivityForResult(editIntent, EDIT_TASK_REQUEST_CODE);
             }
         });
@@ -117,6 +124,9 @@ public class MainActivity extends AppCompatActivity {
         String itemNotes = null;
         String itemPriority = null;
         String itemStatus = null;
+        String itemDate = null;
+        Long itemMilliTime = null;
+
         if (data.hasExtra("taskName")) {
             itemName = data.getExtras().getString("taskName");
         }

@@ -1,6 +1,6 @@
 package com.codepath.simpletodo.com.codepath.simpletodo;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by snapfish on 1/25/16.
@@ -9,23 +9,25 @@ public class TodoItem {
 
     private String mTaskName;
     private String mTaskNotes;
-    private Date mDueDate;
+    private String mDueDate;
     private String mPriority;
     private String mStatus;
+    private Long milliTime;
 
-    public TodoItem(Date mDueDate, String mPriority, String mStatus, String mTaskName, String mTaskNotes) {
+    public TodoItem(String mDueDate, String mPriority, String mStatus, String mTaskName, String mTaskNotes, long milliTime) {
         this.mDueDate = mDueDate;
         this.mPriority = mPriority;
         this.mStatus = mStatus;
         this.mTaskName = mTaskName;
         this.mTaskNotes = mTaskNotes;
+        this.milliTime = milliTime;
     }
 
-    public Date getmDueDate() {
+    public String getmDueDate() {
         return mDueDate;
     }
 
-    public void setmDueDate(Date mDueDate) {
+    public void setmDueDate(String mDueDate) {
         this.mDueDate = mDueDate;
     }
 
@@ -59,5 +61,13 @@ public class TodoItem {
 
     public void setmTaskNotes(String mTaskNotes) {
         this.mTaskNotes = mTaskNotes;
+    }
+
+    public Long getMilliTime() {
+        return milliTime;
+    }
+
+    public void setMilliTime(Long milliTime) {
+        this.milliTime = milliTime;
     }
 }
