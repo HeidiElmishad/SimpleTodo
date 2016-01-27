@@ -102,7 +102,7 @@ public class EditActivity extends AppCompatActivity {
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                 mTaskMilliTime = calendar.getTimeInMillis();
-                mTaskDate= "" + (month+1) + "/" + dayOfMonth + "/" + year;
+                mTaskDate= "" + (month+1) + "/" + dayOfMonth;
             }
         });
 

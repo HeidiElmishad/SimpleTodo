@@ -89,7 +89,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 milliTime = calendar.getTimeInMillis();
                 Log.d(TAG, "Add Task milliTime " + milliTime);
-                mTaskDate = "" + (month+1) + "/" + dayOfMonth + "/" + year;
+                mTaskDate = "" + (month+1) + "/" + dayOfMonth;
             }
         });
 
