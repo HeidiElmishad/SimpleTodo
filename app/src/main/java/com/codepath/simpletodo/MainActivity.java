@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        readItems();
+        mItemsArray = readItems();
         lvItems = (ListView) findViewById(R.id.lvItems);
-        ArrayList<TodoItem> mItemsArray = new ArrayList<TodoItem>();
+//        mItemsArray = new ArrayList<TodoItem>();
         mItemsAdapter = new ItemsAdapter(this,R.layout.todo_item ,mItemsArray);
         ListView listView = (ListView) findViewById(R.id.lvItems);
         listView.setAdapter(mItemsAdapter);
@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 TodoItem item = mItemsAdapter.getItem(position);
                 mItemsAdapter.remove(item);
-                writeItems();
+                Log.d(TAG, "Heidi itemArray " + mItemsArray);
+                writeItems(mItemsArray);
                 mItemsAdapter.notifyDataSetChanged();
                 Toast.makeText(getBaseContext(),"Item removed!", Toast.LENGTH_LONG).show();
                 return true;
@@ -139,32 +140,40 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         if (data.hasExtra("taskstatus")) {
             itemStatus = data.getExtras().getString("taskstatus");
         }
+        if (data.hasExtra("taskDate")) {
+            itemDate = data.getExtras().getString("taskDate");
+        }
+        if (data.hasExtra("taskMilliTime")) {
+            itemMilliTime = data.getExtras().getLong("taskMilliTime");
+        }
 
-        TodoItem item = new TodoItem(null, itemPriority, itemStatus, itemName, itemNotes);
+        TodoItem item = new TodoItem(itemDate, itemPriority, itemStatus, itemName, itemNotes, itemMilliTime);
         mItemsAdapter.add(item);
-        writeItems();
+        Log.d(TAG, "Heidi itemArray " + mItemsArray);
+        writeItems(mItemsArray);
     }
 
-    private void readItems() {
-//        File filesDir = getFilesDir();
-//        File todoFile = new File(filesDir, "todo.txt");
-//        try{
-//            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-//        }
-//        catch (IOException e){
-//            items = new ArrayList<String>();
-//        }
+    private ArrayList<TodoItem> readItems() {
+        String ser = SerializeObject.ReadSettings(this, "myobject.dat");
+        if (ser != null && !ser.equalsIgnoreCase("")) {
+            Object obj = SerializeObject.stringToObject(ser);
+            if (obj instanceof ArrayList) {
+                mItemsArray = new ArrayList<TodoItem>((ArrayList<TodoItem>) obj);
+            }
+        } else {
+            mItemsArray = new ArrayList<TodoItem>();
+        }
+        return mItemsArray;
     }
 
-    private void writeItems() {
-//        File filesDir = getFilesDir();
-//        File todoFile = new File(filesDir, "todo.txt");
-//        try {
-//            FileUtils.writeLines(todoFile, items);
-//        }
-//        catch (IOException e){
-//            e.printStackTrace();
-//        }
+    private void writeItems(ArrayList<TodoItem> items) {
+        String ser = SerializeObject.objectToString(items);
+        if (ser != null && !ser.equalsIgnoreCase("")) {
+            SerializeObject.WriteSettings(this, ser, "myobject.dat");
+        } else {
+            SerializeObject.WriteSettings(this, "", "myobject.dat");
+        }
+//        Log.d(TAG, "Heidi " + readItems());
 
     }
 
